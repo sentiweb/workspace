@@ -4,8 +4,9 @@ Title: Workspace helps to organize a set of projects sharing common config
 Version: 0.1.0
 Author: Clément Turbelin <clement.turbelin@sorbonne-universite.fr>
 Maintainer: Clément Turbelin <clement.turbelin@sorbonne-universite.fr>
-Description: A workpace is a set of R projects (each in subdirectory of the workspace root). Workspace package provides 
-    functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory).
+Description: A workpace is a set of R projects (each project in a subdirectory of the workspace root). Workspace package provides 
+    functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and
+    provides functions to manage paths outside the project avoiding the need to use absolute path.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
