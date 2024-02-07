@@ -61,3 +61,16 @@ A typical `conf.R` is just:
 Then the other script in the subdirectory just has `source('conf.R')` as first line to load the commons.
 We use relative path only, so each script is run with its own directory as working directory.
 }
+\section{Options}{
+
+
+Several options can be defined in options()
+
+\describe{
+\item{workspace_verbose}{Show verbose message during workspace loading}
+\item{workspace_outpath}{Define base output path (call \code{\link{set_base_out_path}()})}
+\item{workspace_autoload}{Autoload workspace when library is loaded}
+\item{workspace_env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
+}
+}
+

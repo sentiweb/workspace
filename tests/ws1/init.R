@@ -1,0 +1,1 @@
+myMarvelousVariable = TRUE

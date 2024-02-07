@@ -54,12 +54,37 @@
 #' Then the other script in the subdirectory just has `source('conf.R')` as first line to load the commons.
 #' We use relative path only, so each script is run with its own directory as working directory.
 #'
+#' @section Options:
+#'
+#' Several options can be defined in options()
+#'
+#' \describe{
+#' \item{workspace_verbose}{Show verbose message during workspace loading}
+#' \item{workspace_outpath}{Define base output path (call \code{\link{set_base_out_path}()})}
+#' \item{workspace_autoload}{Autoload workspace when library is loaded}
+#' \item{workspace_env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
+#' }
+#'
+#'
 #' @importFrom rlang abort
 "_PACKAGE"
 
-#' .Share is a local configuration environment holding local values
-#' And platform specific stuffs
-#' @noRd
-.Share = new.env()
-
 WORKSPACE_FILE='.Rworkspace'
+
+#'
+#' Store the current state of the workspace
+#'
+#' @noRd
+.State = fastmap::fastmap()
+
+#' @noRd
+OPTION_VERBOSE = "workspace_verbose"
+
+#' @noRd
+OPTION_OUTPATH = "workspace_outpath" # Default Outpath
+
+#' @noRd
+OPTION_AUTOLOAD = "workspace_autoload" # Autoload workspace when package is attached using library()
+
+#' @noRd
+OPTION_ENV = "workspace_env" # env Where to load workspace files when using autoload.

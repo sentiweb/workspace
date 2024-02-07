@@ -8,10 +8,10 @@
 load_workspace <- function(envir=rlang::caller_env()) {
   booted = workspace_booted()
   if(booted) {
-      return(invisible())
+      return(invisible(NULL))
   }
   # Avoid reentry if load_workspace() is called at several levels
-  .Share[["ws.booted"]] <- TRUE
+  workspace_options(ws.booted=TRUE)
   workspace = find_workspace()
   ws_file = file.path(workspace, WORKSPACE_FILE)
   bootstraps = readLines(ws_file, warn=FALSE)
@@ -34,7 +34,7 @@ load_workspace <- function(envir=rlang::caller_env()) {
 #' Get the booted state of the workspace
 #' @export
 workspace_booted = function() {
-  get0("ws.booted", .Share, ifnotfound = FALSE)
+  get_option("ws.booted", default=FALSE)
 }
 
 find_R_file <- function(path) {

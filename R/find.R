@@ -7,7 +7,7 @@
 #' @param max.depth maximum number of upper directory to scan. Default is reasonable but it can be changed.
 #' @export
 find_workspace = function(max.depth=20) {
-  dir = get0("workspace", envir = .Share, ifnotfound = NULL)
+  dir = get_option("workspace", default=NULL)
   if(!is.null(dir)) {
     return(dir)
   }
@@ -23,7 +23,7 @@ find_workspace = function(max.depth=20) {
     }
   }
   if(found) {
-    .Share[["workspace"]] = dir
+    workspace_options("workspace"=dir)
     return(dir)
   }
   rlang::abort("Unable to find workspace")

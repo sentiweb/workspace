@@ -2,7 +2,7 @@
 % Please edit documentation in R/env.R
 \name{workspace_options}
 \alias{workspace_options}
-\title{Define options for the package}
+\title{Define state of the package}
 \usage{
 workspace_options(...)
 }
@@ -10,7 +10,7 @@ workspace_options(...)
 \item{...}{list of named argument with options to defined}
 }
 \description{
-Define options for the package
+Define state of the package
 }
 \details{
 Accepted options

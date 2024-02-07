@@ -1,10 +1,11 @@
-#' Get the workspace environment
+#' Get the workspace state map
+#' @return fastmap object
 #' @export
-workspace_env = function() {
-  .Share
+workspace_state = function() {
+  .State
 }
 
-#' Define options for the package
+#' Define state of the package
 #' @param ... list of named argument with options to defined
 #'
 #' @details
@@ -14,13 +15,13 @@ workspace_env = function() {
 #' }
 #' @export
 workspace_options = function(...) {
-  known = c('base.out.path')
-
   opts = list(...)
   for(n in names(opts)) {
-    if(!n %in% known) {
-      rlang::abort("")
-    }
-    .Share[[n]] = opts[[n]]
+    .State$set(n, opts[[n]])
   }
+}
+
+#' @noRd
+get_option = function(name, default=NULL) {
+  .State$get(name, missing=default)
 }
