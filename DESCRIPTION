@@ -1,9 +1,8 @@
 Package: workspace
 Type: Package
+Authors@R: person("Clément", "Turbelin", email = "clement.turbelin@sorbonne-universite.f", role = c("aut", "cre"))
 Title: Workspace helps to organize a set of projects sharing common config
-Version: 0.1.0
-Author: Clément Turbelin <clement.turbelin@sorbonne-universite.fr>
-Maintainer: Clément Turbelin <clement.turbelin@sorbonne-universite.fr>
+Version: 0.2.0
 Description: A workpace is a set of R projects (each project in a subdirectory of the workspace root). Workspace package provides 
     functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and
     provides functions to manage paths outside the project avoiding the need to use absolute path.
@@ -11,5 +10,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    rlang
-RoxygenNote: 7.1.1
+    rlang,
+    fastmap (>= 1.0)
+RoxygenNote: 7.2.3
+	
