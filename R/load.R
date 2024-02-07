@@ -7,13 +7,20 @@
 #' @export
 load_workspace <- function(envir=rlang::caller_env()) {
   booted = workspace_booted()
+  verbose = base::getOption(OPTION_VERBOSE, default=FALSE)
   if(booted) {
-      return(invisible(NULL))
+    if(verbose) {
+      rlang::inform(paste("Workspace already booted"), class="workspace_msg")
+    }
+    return(invisible(NULL))
   }
   # Avoid reentry if load_workspace() is called at several levels
   workspace_options(ws.booted=TRUE)
   workspace = find_workspace()
   ws_file = file.path(workspace, WORKSPACE_FILE)
+  if(verbose) {
+    rlang::inform(paste("Workspace found in ", sQuote(workspace)), class="workspace_msg")
+  }
   bootstraps = readLines(ws_file, warn=FALSE)
   for(file in bootstraps) {
     if(grepl("^#", file )) {
@@ -26,6 +33,9 @@ load_workspace <- function(envir=rlang::caller_env()) {
     p = file.path(workspace, f)
     if(!file.exists(p)) {
       rlang::abort(paste0("File listed in ",ws_file, " does not exists", sQuote(file), " from ", workspace))
+    }
+    if(verbose) {
+      rlang::inform(paste("loading workspace file ", sQuote(p)), class="workspace_msg")
     }
     source(p, local=envir)
   }
