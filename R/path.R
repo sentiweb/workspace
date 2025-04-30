@@ -17,6 +17,7 @@ set_base_out_path <- function(path) {
 #' Get the global base output path
 #
 #' @family path-functions
+#' @export
 get_base_out_path <- function() {
   get_option("base.out.path")
 }
@@ -62,7 +63,7 @@ update_out_path = function(path=NULL) {
 }
 
 #' Test if the current output path is defined using an absolute path or has been created using internal paths segments
-is_out_full_path = function() {
+is_absolute_out_path = function() {
   o = get_option("out.path")
   isTRUE(attr(o, "full"))
 }
@@ -94,7 +95,7 @@ add_path_prefix = function(name, prefix) {
   p = get_option("path.prefix", default=list())
   p[[name]] <- prefix
   workspace_options(path.prefix=p)
-  if(is_out_full_path()) {
+  if(is_absolute_out_path()) {
     rlang::warn("Current path has been defind by full path, wont override it.")
   } else {
     update_out_path()
@@ -177,7 +178,7 @@ print.paths_definition = function(x, ...) {
     cat(" - suffix = ", suffix, " (last value passed to init_path())\n")
     r = c(r, 'suffix')
   }
-  if(is_out_full_path()) {
+  if(is_absolute_out_path()) {
     cat("(!) Full path has been used at last init.path() call, paths config is ignored\n")
   } else {
     cat("Resolved by : ", paste(paste0("[",r,"]"), collapse=' / '), "\n"  )
