@@ -75,16 +75,20 @@ WORKSPACE_FILE='.Rworkspace'
 #' Store the current state of the workspace
 #'
 #' @noRd
-.State = fastmap::fastmap()
+.State = rlang::new_environment()
 
 #' @noRd
-OPTION_VERBOSE = "workspace_verbose"
+OPTION_VERBOSE = "workspace.verbose"
 
 #' @noRd
-OPTION_OUTPATH = "workspace_outpath" # Default Outpath
+OPTION_OUTPATH = "workspace.outpath" # Default Outpath
 
 #' @noRd
-OPTION_AUTOLOAD = "workspace_autoload" # Autoload workspace when package is attached using library()
+OPTION_AUTOLOAD = "workspace.autoload" # Autoload workspace when package is attached using library()
 
 #' @noRd
-OPTION_ENV = "workspace_env" # env Where to load workspace files when using autoload.
+OPTION_ENV = "workspace.env" # env Where to load workspace files when using autoload.
+
+#' @noRd
+OPTION_MAXDEPTH = "workspace.maxdepth" # Maximum depth to look up to find a workspace
+

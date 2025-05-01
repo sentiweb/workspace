@@ -11,7 +11,7 @@
 #' @family path-functions
 #' @export
 set_base_out_path <- function(path) {
-  workspace_options("base.out.path"=path)
+  workspace_state("base.out.path"=path)
 }
 
 #' Get the global base output path
@@ -19,7 +19,7 @@ set_base_out_path <- function(path) {
 #' @family path-functions
 #' @export
 get_base_out_path <- function() {
-  get_option("base.out.path")
+  get_state("base.out.path")
 }
 
 #' Define an path for files, usable by \code{\link{my_path}()}
@@ -37,10 +37,10 @@ init_path <- function(p, full.path=F) {
   if(isTRUE(full.path)) {
     path = p
     attr(path, "full") <- TRUE
-    workspace_options(path.suffix = NULL)
+    workspace_state(path.suffix = NULL)
   } else {
     # get output path
-    workspace_options(path.suffix = p)
+    workspace_state(path.suffix = p)
     path = NULL
   }
   update_out_path(path)
@@ -52,8 +52,8 @@ update_out_path = function(path=NULL) {
   if(is.null(path)) {
     path = create_path()
   }
-  workspace_options(
-    out.path=path, # update current output path
+  workspace_state(
+    out.path = path, # update current output path
     out.path.sep= ifelse( any(grep("/$", path) == 1) , "", "/")# check for directory separator
   )
   if( !file.exists(path) ) {
@@ -64,7 +64,7 @@ update_out_path = function(path=NULL) {
 
 #' Test if the current output path is defined using an absolute path or has been created using internal paths segments
 is_absolute_out_path = function() {
-  o = get_option("out.path")
+  o = get_state("out.path")
   isTRUE(attr(o, "full"))
 }
 
@@ -92,9 +92,9 @@ is_absolute_out_path = function() {
 #' @param name name of the prefix
 #' @param prefix path to add to the prefix
 add_path_prefix = function(name, prefix) {
-  p = get_option("path.prefix", default=list())
+  p = get_state("path.prefix", default=list())
   p[[name]] <- prefix
-  workspace_options(path.prefix=p)
+  workspace_state(path.prefix=p)
   if(is_absolute_out_path()) {
     rlang::warn("Current path has been defind by full path, wont override it.")
   } else {
@@ -118,7 +118,7 @@ create_path = function(base=NULL, prefixes=list(), suffix=NULL) {
     path = base
   }
   # Create prefixes
-  pp = get_option("path.prefix", default=list())
+  pp = get_state("path.prefix", default=list())
   if(length(pp) > 0) {
     for(n in names(pp)) {
       if(hasName(prefixes, n)) {
@@ -131,7 +131,7 @@ create_path = function(base=NULL, prefixes=list(), suffix=NULL) {
     path = paste0(path, paste0(pp, collapse='/'))
   }
   path = ending_slash(path)
-  ps = get_option("path.suffix", default=NULL)
+  ps = get_state("path.suffix", default=NULL)
   if(!is.null(suffix)) {
     ps = suffix
   }
@@ -148,8 +148,8 @@ create_path = function(base=NULL, prefixes=list(), suffix=NULL) {
 get_current_paths = function() {
   paths = list(
     base = get_base_out_path(),
-    prefixes = get_option("path.prefix"),
-    suffix = get_option("path.suffix", default=NULL),
+    prefixes = get_state("path.prefix"),
+    suffix = get_state("path.suffix", default=NULL),
     resolved = my_path()
   )
   structure(paths, class="paths_definition")
@@ -173,7 +173,7 @@ print.paths_definition = function(x, ...) {
     }, names(x$prefixes), x$prefixes)
     r = c(r, names(x$prefixes))
   }
-  suffix = get_option("path.suffix", default=NULL)
+  suffix = get_state("path.suffix", default=NULL)
   if(!is.null(suffix)) {
     cat(" - suffix = ", suffix, " (last value passed to init_path())\n")
     r = c(r, 'suffix')
@@ -192,7 +192,7 @@ print.paths_definition = function(x, ...) {
 #' @param ... characters string to used (will be concatenated with no space)
 #' @export
 my_path <- function(...) {
-  out.path = get_option("out.path")
-  sep = get_option("out.path.sep")
+  out.path = get_state("out.path")
+  sep = get_state("out.path.sep")
   paste0(out.path, sep, ...)
 }

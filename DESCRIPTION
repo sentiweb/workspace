@@ -11,6 +11,5 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     rlang,
-    fastmap (>= 1.0)
 RoxygenNote: 7.2.3
 	

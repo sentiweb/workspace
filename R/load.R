@@ -15,7 +15,7 @@ load_workspace <- function(envir=rlang::caller_env()) {
     return(invisible(NULL))
   }
   # Avoid reentry if load_workspace() is called at several levels
-  workspace_options(ws.booted=TRUE)
+  workspace_state(ws.booted=TRUE)
   workspace = find_workspace()
   ws_file = file.path(workspace, WORKSPACE_FILE)
   if(verbose) {
@@ -32,7 +32,7 @@ load_workspace <- function(envir=rlang::caller_env()) {
     }
     p = file.path(workspace, f)
     if(!file.exists(p)) {
-      rlang::abort(paste0("File listed in ",ws_file, " does not exists", sQuote(file), " from ", workspace))
+      rlang::abort(paste0("File listed in ", ws_file, " does not exists", sQuote(file), " from ", workspace))
     }
     if(verbose) {
       rlang::inform(paste("loading workspace file ", sQuote(p)), class="workspace_msg")
@@ -44,7 +44,7 @@ load_workspace <- function(envir=rlang::caller_env()) {
 #' Get the booted state of the workspace
 #' @export
 workspace_booted = function() {
-  get_option("ws.booted", default=FALSE)
+  get_state("ws.booted", default=FALSE)
 }
 
 find_R_file <- function(path) {
