@@ -19,22 +19,23 @@
 #' This can be achieved by using workspace.
 #'
 #' A workspace is just a directory layout to group some projects (in subdirectories). The set of functions are not called automatically.
-#' To be identified as the workspace root directory it MUST contains a file `.Rworkspace`
-#' The file `.Rworkspace` is not working like `.Rprofile` and do not contains R code but can contain the list of files to load
-#' when load_workspace() is called (file path are relative to the root, i.e. where `.Rworkspace` lives).
+#' To be identified as the workspace root directory it MUST contains a file `.Rworkspace`.
 #'
-#' To share a configuration, you can define one or several bootstrap files to be loaded by load_workspace() in the .Rworkspace file.
+#' The file `.Rworkspace` is not working like `.Rprofile` and do not contains R code but can contain the list of files to load
+#' when \code{\link{launch}()})} is called (file path are relative to the root, i.e. where `.Rworkspace` lives).
+#'
+#' To share a configuration, you can define one or several bootstrap files to be loaded by \code{\link{launch}()})} in the `.Rworkspace` file.
 #'
 #' Example (the following is an example of our settings for many projects, to describe how we use this package):
 #'
-#' In our projects we defined a .Rworkspace with the following content (one file by line):
+#' In our projects we defined a `.Rworkspace` with the following content (one file by line):
 #' ---
 #' location.R
 #' workspace.R
 #' ---
 #'
-#' The `location.R` is not versioned and contains the installation specific for the project (machine-specific and real paths)
-#' The `workspace.R` is versionned and contains the config share by all the projects in the workspace and machine/installation independent
+#' The `location.R` is ignored by version control and contains the installation specific for the project (machine-specific and real paths)
+#' The `workspace.R` is under version control and contains the config share by all the projects in the workspace and machine/installation independent
 #'
 #' In our settings all path in our projects are relative to the workspace, external path (outside the workspace dir) are
 #' provided by variables in location.R. With this settings, the scripts in workspace can run everywhere without changing the code.
@@ -42,13 +43,13 @@
 #' This is a convention (the workspace package does not provide list of bootstrap files you can define yours as you want, or none)
 #'
 #' In each project (in workspace' subdirectory)
-#' We can call `workspace::load_workspace()`
+#' We can call `workspace::launch()`
 #'
 #' To simplify, each project contains a `conf.R` which contains the subdirectory's scripts common configuration/functions.
 #'
 #' A typical `conf.R` is just:
 #' ---
-#'  `workspace::load_workspace()`
+#'  `workspace::launch()`
 #' ---
 #'
 #' Then the other script in the subdirectory just has `source('conf.R')` as first line to load the commons.

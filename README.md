@@ -1,34 +1,40 @@
 # Workspace package
 
-The workspace package propose a way to organize R project when they share a common configuration (or init process).
+The workspace package provides a way to organize R projects when they share a common configuration (or init process).
 
-The 'workspace' is a root directory containing sub-directories with R scripts (potentially on many sublevel directories).
+The 'workspace' is a root directory containing subdirectories with R scripts (potentially on many sublevel directories).
 
-This packages allows scripts to be run in their own directory (i.e. as R working directory), allowing them to resolve relative path from their location (more natural behaviour)
+This package allows scripts to be run in their own directory (i.e. as R working directory), allowing them to resolve relative paths from their location (more natural behaviour)
 and to access to the workspace directory and way to access location outside the workspace.
 
 It shares some common features with other packages like
+
 - [rprojroot](https://rprojroot.r-lib.org/)
 - [here](https://here.r-lib.org/)
 
 But has a different approach
 
 - The workspace root is identified with an .Rworkspace file (to promote a standard layout)
-- The .Rworkspace file can contains one or several files to load at launch, allowing to setup the project at the workspace level (complementary to site/user)
+- The .Rworkspace file can contain one or more files to loaded at when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)
 
-It also provides paths management functions, to allow to refer to locations outside the workspace avoiding to manipulate full path.
-
+It also provides paths management functions, to allow reference to locations outside the workspace avoiding to manipulate full path.
 
 ## The workspace
 
-The workspace is a directory, with R scripts organized as you want in subdirectories.
+The workspace is a directory, in which R scripts are organized as you want in subdirectories (obviously if they are not, no need for it).
 
-To use the workspace allow each script to determine where is the root of the workspace (and get files from files) and to run one or more common setup scripts.
+Use the workspace allow each script to determine where is the root of the workspace (and get files from files) and to run one or more common setup scripts. 
 
 To create a workpace, just create a file named ".Rworkspace" at the root of the project, containing several subdirectories.
 It's also possible to use the `init_workspace()` function to do this.
 
-To use the setup feature, put the name of the script to load as a line of ".Rworkspace" file.
+To use the setup feature, put the name of the script to be loaded on workspace launch as a line of ".Rworkspace" file (one script by line). Path of these scripts must be **relative to workspace root directory**.
+
+For example, if a "setup.R" file is at the root of the workspace directory, just put in ".Rworkspace"
+
+```
+setup.R
+```
 
 Now you can run a script in a subdirectory, to launch the workspace from this script use
 
@@ -36,17 +42,19 @@ Now you can run a script in a subdirectory, to launch the workspace from this sc
 workspace::launch()
 ```
 
+The way the package run, the script doesnt need to know about how to find the root or what to load to configure the project because it's not its responsability. It only has to tell the workspace to do the job.
+
 ## Path functions
 
-The workspace package proposes a way to handle external path using a path builder.
+The workspace package provides  a way to handle external paths using a path builder.
 
-An global path builder is available (`global_out_path()`) intending to manage the case when you want to refer to a common output directory (for example where all scripts output will be placed).
+There is a global path builder is available (accessible using `global_out_path()`) which is intended to handle the case when you want to refer to a common output directory (e.g. where all script output will be placed).
 
-The principle is to allow scripts to refer to this external location but only known the real location when running, only relative path has to be used in the scripts.
+The principle is to allow scripts to refer to this external location but since the real location is only known when running, only relative paths have to be used in the scripts.
 
-To use it, you have to define where will be this location on the computer running the script, but to make it runnable in another computer (meaning often another location) it's
-strongly recommended to define it in a place not managed by a versioning system (like git or subversion).
-For example, it can be defined in a user-specific .Rprofile or in a  scripts loaded during workspace setup (but ignored by git/)
+To use it, you have to define where this output location will be on the computer running the script, but to make it runnable in another computer (meaning often another location) it's
+strongly recommended that you define it in a place not managed by a version control system (like git or subversion).
+For example, it can be defined in a user-specific `.Rprofile` or in a script loaded during workspace setup (but ignored by version control so each installation must provide it's specific content).
 
 ```R
 options(workspace.outpath="/my/output/path")
