@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Workspace helps to organize a set of projects sharing common config">
-<meta name="description" content="A workpace is a set of R projects (each project in a subdirectory of the workspace root). Workspace package provides functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and provides functions to manage paths outside the project avoiding the need to use absolute path.">
-<meta property="og:description" content="A workpace is a set of R projects (each project in a subdirectory of the workspace root). Workspace package provides functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and provides functions to manage paths outside the project avoiding the need to use absolute path.">
+<meta name="description" content="A workpace is a way to organize a set of R scripts in multiple subdirectories but allowing to share and load a common setup. Workspace package provides functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and provides functions to manage paths outside the project avoiding the need to use absolute path.">
+<meta property="og:description" content="A workpace is a way to organize a set of R scripts in multiple subdirectories but allowing to share and load a common setup. Workspace package provides functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and provides functions to manage paths outside the project avoiding the need to use absolute path.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">workspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,42 +47,49 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="workspace-package">Workspace package<a class="anchor" aria-label="anchor" href="#workspace-package"></a>
 </h1></div>
-<p>The workspace package propose a way to organize R project when they share a common configuration (or init process).</p>
-<p>The ‘workspace’ is a root directory containing sub-directories with R scripts (potentially on many sublevel directories).</p>
-<p>This packages allows scripts to be run in their own directory (i.e. as R working directory), allowing them to resolve relative path from their location (more natural behaviour) and to access to the workspace directory and way to access location outside the workspace.</p>
-<p>It shares some common features with other packages like - <a href="https://rprojroot.r-lib.org/" class="external-link">rprojroot</a> - <a href="https://here.r-lib.org/" class="external-link">here</a></p>
+<p>The workspace package provides a way to organize R projects when they share a common configuration (or init process).</p>
+<p>The ‘workspace’ is a root directory containing subdirectories with R scripts (potentially on many sublevel directories).</p>
+<p>This package allows scripts to be run in their own directory (i.e. as R working directory), allowing them to resolve relative paths from their location (more natural behaviour) and to access to the workspace directory and way to access location outside the workspace.</p>
+<p>It shares some common features with other packages like</p>
+<ul>
+<li><a href="https://rprojroot.r-lib.org/" class="external-link">rprojroot</a></li>
+<li><a href="https://here.r-lib.org/" class="external-link">here</a></li>
+</ul>
 <p>But has a different approach</p>
 <ul>
 <li>The workspace root is identified with an .Rworkspace file (to promote a standard layout)</li>
-<li>The .Rworkspace file can contains one or several files to load at launch, allowing to setup the project at the workspace level (complementary to site/user)</li>
+<li>The .Rworkspace file can contain one or more files to loaded at when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)</li>
 </ul>
-<p>It also provides paths management functions, to allow to refer to locations outside the workspace avoiding to manipulate full path.</p>
+<p>It also provides paths management functions, to allow reference to locations outside the workspace avoiding to manipulate full path.</p>
 <div class="section level2">
 <h2 id="the-workspace">The workspace<a class="anchor" aria-label="anchor" href="#the-workspace"></a>
 </h2>
-<p>The workspace is a directory, with R scripts organized as you want in subdirectories.</p>
-<p>To use the workspace allow each script to determine where is the root of the workspace (and get files from files) and to run one or more common setup scripts.</p>
+<p>The workspace is a directory, in which R scripts are organized as you want in subdirectories (obviously if they are not, no need for it).</p>
+<p>Use the workspace allow each script to determine where is the root of the workspace (and get files from files) and to run one or more common setup scripts.</p>
 <p>To create a workpace, just create a file named “.Rworkspace” at the root of the project, containing several subdirectories. It’s also possible to use the <code><a href="reference/init_workspace.html">init_workspace()</a></code> function to do this.</p>
-<p>To use the setup feature, put the name of the script to load as a line of “.Rworkspace” file.</p>
+<p>To use the setup feature, put the name of the script to be loaded on workspace launch as a line of “.Rworkspace” file (one script by line). Path of these scripts must be <strong>relative to workspace root directory</strong>.</p>
+<p>For example, if a “setup.R” file is at the root of the workspace directory, just put in “.Rworkspace”</p>
+<pre><code><span><span class="va">setup.R</span></span></code></pre>
 <p>Now you can run a script in a subdirectory, to launch the workspace from this script use</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">workspace</span><span class="fu">::</span><span class="fu"><a href="reference/launch.html">launch</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The way the package run, the script doesnt need to know about how to find the root or what to load to configure the project because it’s not its responsability. It only has to tell the workspace to do the job.</p>
 </div>
 <div class="section level2">
 <h2 id="path-functions">Path functions<a class="anchor" aria-label="anchor" href="#path-functions"></a>
 </h2>
-<p>The workspace package proposes a way to handle external path using a path builder.</p>
-<p>An global path builder is available (<code><a href="reference/global_out_path.html">global_out_path()</a></code>) intending to manage the case when you want to refer to a common output directory (for example where all scripts output will be placed).</p>
-<p>The principle is to allow scripts to refer to this external location but only known the real location when running, only relative path has to be used in the scripts.</p>
-<p>To use it, you have to define where will be this location on the computer running the script, but to make it runnable in another computer (meaning often another location) it’s strongly recommended to define it in a place not managed by a versioning system (like git or subversion). For example, it can be defined in a user-specific .Rprofile or in a scripts loaded during workspace setup (but ignored by git/)</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>The workspace package provides a way to handle external paths using a path builder.</p>
+<p>There is a global path builder is available (accessible using <code><a href="reference/global_out_path.html">global_out_path()</a></code>) which is intended to handle the case when you want to refer to a common output directory (e.g. where all script output will be placed).</p>
+<p>The principle is to allow scripts to refer to this external location but since the real location is only known when running, only relative paths have to be used in the scripts.</p>
+<p>To use it, you have to define where this output location will be on the computer running the script, but to make it runnable in another computer (meaning often another location) it’s strongly recommended that you define it in a place not managed by a version control system (like git or subversion). For example, it can be defined in a user-specific <code>.Rprofile</code> or in a script loaded during workspace setup (but ignored by version control so each installation must provide it’s specific content).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>workspace.outpath<span class="op">=</span><span class="st">"/my/output/path"</span><span class="op">)</span></span></code></pre></div>
 <p>Once <code>workspace</code> package is loaded, you can use <code><a href="reference/my_path.html">my_path()</a></code> to get the path inside the output path</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/my_path.html">my_path</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># The current output path, -&gt; /my/output/path</span></span>
 <span><span class="fu"><a href="reference/my_path.html">my_path</a></span><span class="op">(</span><span class="st">"myfile"</span><span class="op">)</span> <span class="co"># -&gt; /my/output/path/myfile</span></span></code></pre></div>
 <p>To avoid repetition, it’s also possible to use suffix in the common output path</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/init_path.html">init_path</a></span><span class="op">(</span><span class="st">"subprojet1"</span><span class="op">)</span> <span class="co"># Common output path is now /my/output/path/subproject1</span></span>
 <span><span class="fu"><a href="reference/my_path.html">my_path</a></span><span class="op">(</span><span class="st">"myfile"</span><span class="op">)</span> <span class="co"># /my/output/path/subproject1/myfile</span></span>
