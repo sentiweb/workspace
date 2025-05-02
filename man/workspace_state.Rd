@@ -6,6 +6,12 @@
 \usage{
 workspace_state(...)
 }
+\arguments{
+\item{...}{named list of values to set in the state}
+}
+\value{
+environment the current state
+}
 \description{
 Define state of the package
 }

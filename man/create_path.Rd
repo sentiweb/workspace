@@ -9,7 +9,7 @@ create_path(base = NULL, prefixes = list(), suffix = NULL, .builder = NULL)
 \arguments{
 \item{base}{chr base output path, use .builder will be used if NULL}
 
-\item{prefixes}{list() replace some prefixes, only works if prefixes is already defined by \code{\link{add_path_prefix}()}}
+\item{prefixes}{list() replace some prefixes, only works if prefixes is already defined by \code{\link{add_out_path_prefix}()}}
 
 \item{suffix}{chr suffix to use, if NULL use default}
 

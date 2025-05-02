@@ -68,7 +68,7 @@ Several options can be defined in options()
 
 \describe{
 \item{workspace.verbose}{Show verbose message during workspace loading}
-\item{workspace.outpath}{Define base output path (call \code{\link{set_base_out_path}()})}
+\item{workspace.outpath}{Define base output path (call \code{\link{set_root_out_path}()})}
 \item{workspace.autoload}{Autoload workspace when library is loaded}
 \item{workspace.env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
 \item{workspace.maxdepth}{Max depth to use to find the workspace accross upper directory of getwd(), default is 100}

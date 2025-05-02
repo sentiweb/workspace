@@ -7,7 +7,7 @@
 set_root_out_path(root)
 }
 \arguments{
-\item{path}{path where the output path should be defined}
+\item{root}{path where the output path should be defined}
 }
 \description{
 This function should be called before any use of \code{\link{init_path}()} or \code{\link{my_path}()}

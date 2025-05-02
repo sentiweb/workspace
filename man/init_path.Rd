@@ -10,9 +10,11 @@ init_path(p, full.path = FALSE, create = TRUE)
 \item{p}{character path}
 
 \item{full.path}{logical if TRUE p is considered as an absolute path, replace all the current path}
+
+\item{create}{logical, if TRUE create the subpath if not exists}
 }
 \description{
-\code{init_path()} and \code{\link{my_path}()} are dedicated to manage path to files used by scripts to make them independant from the
+\code{init_path()} and \code{\link{my_path}()} are dedicated to manage path to files used by scripts to make them independent from the
 actual physical location of the files, which depends on where (on which machine, account) the script is running.
 }
 \details{

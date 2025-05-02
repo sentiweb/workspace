@@ -26,36 +26,6 @@ root / [prefixes] / suffix
 prefixes are optional
 The Builder can also use an absolute mode, using directly a full path, in this mode the components are not used
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{root}}{Root of the path}
-
-\item{\code{prefixes}}{List of path prefixes}
-
-\item{\code{suffix}}{Current suffix to add to the root}
-
-\item{\code{path}}{Actual real path}
-
-\item{\code{absolute}}{Is current path in absolute mode}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{root}}{Root of the path}
-
-\item{\code{prefixes}}{List of path prefixes}
-
-\item{\code{suffix}}{Current suffix to add to the root}
-
-\item{\code{path}}{Actual real path}
-
-\item{\code{absolute}}{Is current path in absolute mode}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
