@@ -3,6 +3,7 @@
 
 #' Ensure some paths ends with an ending slash
 #' @param x path to check for ending slash
+#' @noRd
 ending_slash <- function (x)
 {
   ifelse(endsWith(x, "/"), x, paste0(x, "/"))
@@ -17,22 +18,22 @@ ending_slash <- function (x)
 #' prefixes are optional
 #' The Builder can also use an absolute mode, using directly a full path, in this mode the components are not used
 #' @export
-PathBuilder = R6::R6Class("PathBuilder",
+PathBuilder = R6Class("PathBuilder",
   private=list(
 
-    #' @field root Root of the path
+    # #' @field root Root of the path
     root=NULL,
 
-    #' @field prefixes List of path prefixes
+    # #' @field prefixes List of path prefixes
     prefixes=list(),
 
-    #' @field suffix Current suffix to add to the root
+    # #' @field suffix Current suffix to add to the root
     suffix=NULL,
 
-    #' @field path Actual real path
+    # #' @field path Actual real path
     current_path=NULL,
 
-    #' @field absolute Is current path in absolute mode
+    # #' @field absolute Is current path in absolute mode
     absolute=FALSE
   ),
   public=list(
@@ -239,7 +240,7 @@ init_path <- function(p, full.path=FALSE, create=TRUE) {
   } else {
     .out_path$set_suffix(p)
   }
-  update_out_path()
+  update_out_path(create=create)
 }
 
 #' @noRd
@@ -361,5 +362,5 @@ print.path_components = function(x, ...) {
 #' @param ... characters string to used (will be concatenated with no space)
 #' @export
 my_path <- function(...) {
-  out.path = .out_path$path(...)
+  .out_path$path(...)
 }
