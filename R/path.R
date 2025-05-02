@@ -61,6 +61,16 @@ PathBuilder = R6Class("PathBuilder",
     },
 
     #' @description
+    #' Resolve the actual root path (the root property could be a function)
+    root_path = function() {
+      if(is.function(self$root)) {
+        private$root()
+      } else {
+        private$root
+      }
+    },
+
+    #' @description
     #' Rebuilt current path from the path components
     #' If absolute mode is on, the full path will be returned, otherwise the path will be rebuild from components
     update=function() {
@@ -68,7 +78,7 @@ PathBuilder = R6Class("PathBuilder",
         return(invisible(private$path))
       }
       # Create prefixes
-      path = private$root
+      path = self$root_path()
       path = ending_slash(path)
       pp = c()
       if(length(private$prefixes) > 0) {
@@ -176,7 +186,7 @@ PathBuilder = R6Class("PathBuilder",
     #' Export components as a static list
     components = function() {
       r = list(
-        root   = private$root,
+        root   = self$root_path(),
         suffix = private$suffix,
         prefixes = private$prefixes,
         path    = private$current_path,
@@ -189,13 +199,13 @@ PathBuilder = R6Class("PathBuilder",
 )
 
 #' Global out path
-#'
+#' @noRd
 .out_path = PathBuilder$new(getwd())
 
 # Register the common out path in the paths list
 .State$paths$out_path = .out_path
 
-#' Access the global out path instance
+#' Access the PathBuilder instance for the global out path
 #' @export
 global_out_path <- function() {
   .out_path
@@ -219,7 +229,7 @@ set_root_out_path <- function(root) {
 #' @family path-functions
 #' @export
 get_root_out_path <- function() {
-  .out_path$get_root()
+  .out_path$root_path()
 }
 
 #' Define subpath (suffix) of global out path, usable by \code{\link{my_path}()}
