@@ -2,7 +2,7 @@
 % Please edit documentation in R/path.R
 \name{my_path}
 \alias{my_path}
-\title{Return the path of a file in the current ouput path}
+\title{Return the path of a file in the global out path}
 \usage{
 my_path(...)
 }
@@ -10,16 +10,22 @@ my_path(...)
 \item{...}{characters string to used (will be concatenated with no space)}
 }
 \description{
-Return the path of a file in the current ouput path
+my_path is the common function to create path inside the global out path.
+}
+\examples{
+\dontrun{
+  set_root_out_path("/my/path")
+  init_path("")
+  my_path("toto") # get "toto" inside the out path -> /my/path/toto
+}
 }
 \seealso{
 Other path-functions: 
-\code{\link{add_path_prefix}()},
+\code{\link{add_out_path_prefix}()},
 \code{\link{create_path}()},
-\code{\link{get_base_out_path}()},
-\code{\link{get_current_paths}()},
+\code{\link{get_root_out_path}()},
 \code{\link{init_path}()},
-\code{\link{print.paths_definition}()},
-\code{\link{set_base_out_path}()}
+\code{\link{print.path_components}()},
+\code{\link{set_root_out_path}()}
 }
 \concept{path-functions}

@@ -59,14 +59,16 @@
 #' Several options can be defined in options()
 #'
 #' \describe{
-#' \item{workspace_verbose}{Show verbose message during workspace loading}
-#' \item{workspace_outpath}{Define base output path (call \code{\link{set_base_out_path}()})}
-#' \item{workspace_autoload}{Autoload workspace when library is loaded}
-#' \item{workspace_env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
+#' \item{workspace.verbose}{Show verbose message during workspace loading}
+#' \item{workspace.outpath}{Define base output path (call \code{\link{set_root_out_path}()})}
+#' \item{workspace.autoload}{Autoload workspace when library is loaded}
+#' \item{workspace.env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
+#' \item{workspace.maxdepth}{Max depth to use to find the workspace accross upper directory of getwd(), default is 100}
 #' }
 #'
 #'
 #' @importFrom rlang abort
+#' @importFrom utils hasName
 "_PACKAGE"
 
 WORKSPACE_FILE='.Rworkspace'
@@ -75,13 +77,13 @@ WORKSPACE_FILE='.Rworkspace'
 #' Store the current state of the workspace
 #'
 #' @noRd
-.State = rlang::new_environment()
+.State = rlang::new_environment(list(paths=list()))
 
 #' @noRd
 OPTION_VERBOSE = "workspace.verbose"
 
 #' @noRd
-OPTION_OUTPATH = "workspace.outpath" # Default Outpath
+OPTION_OUTPATH = "workspace.outpath" # Default Out path
 
 #' @noRd
 OPTION_AUTOLOAD = "workspace.autoload" # Autoload workspace when package is attached using library()
@@ -92,3 +94,8 @@ OPTION_ENV = "workspace.env" # env Where to load workspace files when using auto
 #' @noRd
 OPTION_MAXDEPTH = "workspace.maxdepth" # Maximum depth to look up to find a workspace
 
+#' Helper to get a given element in the state
+#' @noRd
+get_state = function(name, default=NULL) {
+  get0(name, envir = .State, ifnotfound = default)
+}

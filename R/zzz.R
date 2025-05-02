@@ -5,7 +5,7 @@
   if(pkgname == "workspace") {
     out.path = base::getOption(OPTION_OUTPATH, default = NULL)
     if(!is.null(out.path)) {
-      set_base_out_path(out.path)
+      set_root_out_path(out.path)
     }
   }
 }

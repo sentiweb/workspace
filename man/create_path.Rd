@@ -2,28 +2,29 @@
 % Please edit documentation in R/path.R
 \name{create_path}
 \alias{create_path}
-\title{Generate a path with path components.}
+\title{Generate a path with path components without updating the builder}
 \usage{
-create_path(base = NULL, prefixes = list(), suffix = NULL)
+create_path(base = NULL, prefixes = list(), suffix = NULL, .builder = NULL)
 }
 \arguments{
-\item{base}{chr base output path, use session default if NULL}
+\item{base}{chr base output path, use .builder will be used if NULL}
 
 \item{prefixes}{list() replace some prefixes, only works if prefixes is already defined by \code{\link{add_path_prefix}()}}
 
 \item{suffix}{chr suffix to use, if NULL use default}
+
+\item{.builder}{builder to use for default components values, if NULL use global out path builder}
 }
 \description{
 This function build a path but do not change the current path components of the session
 }
 \seealso{
 Other path-functions: 
-\code{\link{add_path_prefix}()},
-\code{\link{get_base_out_path}()},
-\code{\link{get_current_paths}()},
+\code{\link{add_out_path_prefix}()},
+\code{\link{get_root_out_path}()},
 \code{\link{init_path}()},
 \code{\link{my_path}()},
-\code{\link{print.paths_definition}()},
-\code{\link{set_base_out_path}()}
+\code{\link{print.path_components}()},
+\code{\link{set_root_out_path}()}
 }
 \concept{path-functions}

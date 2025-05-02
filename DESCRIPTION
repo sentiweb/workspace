@@ -1,6 +1,6 @@
 Package: workspace
 Type: Package
-Authors@R: person("Clément", "Turbelin", email = "clement.turbelin@sorbonne-universite.f", role = c("aut", "cre"))
+Authors@R: person("ClÃ©ment", "Turbelin", email = "clement.turbelin@sorbonne-universite.f", role = c("aut", "cre"))
 Title: Workspace helps to organize a set of projects sharing common config
 Version: 0.2.0
 Description: A workpace is a set of R projects (each project in a subdirectory of the workspace root). Workspace package provides 
@@ -11,5 +11,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     rlang,
-RoxygenNote: 7.2.3
-	
+    R6
+RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

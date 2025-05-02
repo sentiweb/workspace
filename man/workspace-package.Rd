@@ -67,10 +67,15 @@ We use relative path only, so each script is run with its own directory as worki
 Several options can be defined in options()
 
 \describe{
-\item{workspace_verbose}{Show verbose message during workspace loading}
-\item{workspace_outpath}{Define base output path (call \code{\link{set_base_out_path}()})}
-\item{workspace_autoload}{Autoload workspace when library is loaded}
-\item{workspace_env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
+\item{workspace.verbose}{Show verbose message during workspace loading}
+\item{workspace.outpath}{Define base output path (call \code{\link{set_base_out_path}()})}
+\item{workspace.autoload}{Autoload workspace when library is loaded}
+\item{workspace.env}{Environment where to load workspace bootstap files when using autoload, default is globalenv}
+\item{workspace.maxdepth}{Max depth to use to find the workspace accross upper directory of getwd(), default is 100}
 }
 }
 
+\author{
+\strong{Maintainer}: Clément Turbelin \email{clement.turbelin@sorbonne-universite.f}
+
+}
