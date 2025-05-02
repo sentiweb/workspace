@@ -12,10 +12,10 @@ It shares some common features with other packages like
 - [rprojroot](https://rprojroot.r-lib.org/)
 - [here](https://here.r-lib.org/)
 
-But has a different approach
+But has a slightly different approach
 
 - The workspace root is identified with an .Rworkspace file (to promote a standard layout)
-- The .Rworkspace file can contain one or more files to loaded at when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)
+- The .Rworkspace file can contain one or more files to loaded when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)
 
 It also provides paths management functions, to allow reference to locations outside the workspace avoiding to manipulate full path.
 
@@ -23,7 +23,7 @@ It also provides paths management functions, to allow reference to locations out
 
 The workspace is a directory, in which R scripts are organized as you want in subdirectories (obviously if they are not, no need for it).
 
-Use the workspace allow each script to determine where is the root of the workspace (and get files from files) and to run one or more common setup scripts. 
+Use the workspace allows any script inside it to determine the path of the root of the workspace (and get files from files) and to run one or more common setup scripts automatically. 
 
 To create a workpace, just create a file named ".Rworkspace" at the root of the project, containing several subdirectories.
 It's also possible to use the `init_workspace()` function to do this.
@@ -57,10 +57,17 @@ strongly recommended that you define it in a place not managed by a version cont
 For example, it can be defined in a user-specific `.Rprofile` or in a script loaded during workspace setup (but ignored by version control so each installation must provide it's specific content).
 
 ```R
+# Before the workspace package is loaded (in .Rprofile for example)
 options(workspace.outpath="/my/output/path")
+
+# After the package is loaded, the global out path has already been initialized
+# You have to use `set_root_out_path()`
+# For example in a script loaded by the workspace setup
+set_root_out_path("/my/output/path")
+
 ```
 
-Once `workspace` package is loaded, you can use `my_path()` to get the path inside the output path
+Once the `workspace` package is loaded, you can use `my_path()` to get the path inside the output path
 
 ```R
 my_path() # The current output path, -> /my/output/path
