@@ -9,6 +9,18 @@ ending_slash <- function (x)
   ifelse(endsWith(x, "/"), x, paste0(x, "/"))
 }
 
+single_string <- function(x) {
+  name = deparse(substitute(x))
+  x = as.character(x)
+  if(is.na(x)) {
+    rlang::abort(paste0(sQuote(name), " must be a character value, NA given "))
+  }
+  if(!rlang::is_character(x, 1L)) {
+    rlang::abort(paste0(sQuote(name), " must be a single value"))
+  }
+  x
+}
+
 
 #' Path Builder allow to build path from components
 #' A root path, optional prefixes and a suffix (path inside the root)
@@ -18,7 +30,7 @@ ending_slash <- function (x)
 #' prefixes are optional
 #' The Builder can also use an absolute mode, using directly a full path, in this mode the components are not used
 #' @export
-PathBuilder = R6Class("PathBuilder",
+PathBuilder = R6::R6Class("PathBuilder",
   private=list(
 
     # #' @field root Root of the path
@@ -47,9 +59,7 @@ PathBuilder = R6Class("PathBuilder",
     #' Set the root path of the builder
     #' @param root the root path to set
     set_root = function(root) {
-      if(!rlang::is_scalar_character(root)) {
-        rlang::abort("Root path must a single character value")
-      }
+      root = single_string(root)
       private$root = root
       self$update()
     },
@@ -61,16 +71,6 @@ PathBuilder = R6Class("PathBuilder",
     },
 
     #' @description
-    #' Resolve the actual root path (the root property could be a function)
-    root_path = function() {
-      if(is.function(self$root)) {
-        private$root()
-      } else {
-        private$root
-      }
-    },
-
-    #' @description
     #' Rebuilt current path from the path components
     #' If absolute mode is on, the full path will be returned, otherwise the path will be rebuild from components
     update=function() {
@@ -78,7 +78,7 @@ PathBuilder = R6Class("PathBuilder",
         return(invisible(private$path))
       }
       # Create prefixes
-      path = self$root_path()
+      path = private$root
       path = ending_slash(path)
       pp = c()
       if(length(private$prefixes) > 0) {
@@ -103,9 +103,7 @@ PathBuilder = R6Class("PathBuilder",
     #' Define the current suffix component of the path
     #' @param path character
     set_suffix = function(path) {
-      if(!rlang::is_scalar_character(path)) {
-        rlang::abort("Suffix path must be a single character value")
-      }
+      path = single_string(path)
       private$suffix = path
       self$update()
     },
@@ -123,13 +121,11 @@ PathBuilder = R6Class("PathBuilder",
     #' If provided path is null, then absolute mode is disabled and the path is rebuild from components
     #' @param path full path to used
     set_full_path = function(path) {
-      if(!rlang::is_scalar_character(path)) {
-        rlang::abort("path must be a single character value")
-      }
       if(is.null(path)) {
         private$absolute = FALSE
         self$update()
       } else {
+        path = single_string(path)
         private$current_path = path
         private$absolute = TRUE
       }
@@ -186,7 +182,7 @@ PathBuilder = R6Class("PathBuilder",
     #' Export components as a static list
     components = function() {
       r = list(
-        root   = self$root_path(),
+        root   = private$root,
         suffix = private$suffix,
         prefixes = private$prefixes,
         path    = private$current_path,
@@ -200,12 +196,12 @@ PathBuilder = R6Class("PathBuilder",
 
 #' Global out path
 #' @noRd
-.out_path = PathBuilder$new(getwd())
+.out_path = PathBuilder$new("")
 
 # Register the common out path in the paths list
 .State$paths$out_path = .out_path
 
-#' Access the PathBuilder instance for the global out path
+#' Access the global out path instance
 #' @export
 global_out_path <- function() {
   .out_path
@@ -229,7 +225,7 @@ set_root_out_path <- function(root) {
 #' @family path-functions
 #' @export
 get_root_out_path <- function() {
-  .out_path$root_path()
+  .out_path$get_root()
 }
 
 #' Define subpath (suffix) of global out path, usable by \code{\link{my_path}()}
@@ -250,7 +246,7 @@ init_path <- function(p, full.path=FALSE, create=TRUE) {
   } else {
     .out_path$set_suffix(p)
   }
-  update_out_path(create=create)
+  update_out_path()
 }
 
 #' @noRd
@@ -372,5 +368,5 @@ print.path_components = function(x, ...) {
 #' @param ... characters string to used (will be concatenated with no space)
 #' @export
 my_path <- function(...) {
-  .out_path$path(...)
+ .out_path$path(...)
 }
