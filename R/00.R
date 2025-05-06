@@ -22,9 +22,9 @@
 #' To be identified as the workspace root directory it MUST contains a file `.Rworkspace`.
 #'
 #' The file `.Rworkspace` is not working like `.Rprofile` and do not contains R code but can contain the list of files to load
-#' when \code{\link{launch}()})} is called (file path are relative to the root, i.e. where `.Rworkspace` lives).
+#' when \code{\link{launch}()} is called (file path are relative to the root, i.e. where `.Rworkspace` lives).
 #'
-#' To share a configuration, you can define one or several bootstrap files to be loaded by \code{\link{launch}()})} in the `.Rworkspace` file.
+#' To share a configuration, you can define one or several bootstrap files to be loaded by \code{\link{launch}()} in the `.Rworkspace` file.
 #'
 #' Example (the following is an example of our settings for many projects, to describe how we use this package):
 #'

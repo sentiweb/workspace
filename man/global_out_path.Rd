@@ -2,10 +2,10 @@
 % Please edit documentation in R/path.R
 \name{global_out_path}
 \alias{global_out_path}
-\title{Access the global out path instance}
+\title{Access the PathBuilder instance for the global out path}
 \usage{
 global_out_path()
 }
 \description{
-Access the global out path instance
+Access the PathBuilder instance for the global out path
 }

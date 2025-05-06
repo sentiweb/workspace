@@ -32,6 +32,7 @@ The Builder can also use an absolute mode, using directly a full path, in this m
 \item \href{#method-PathBuilder-new}{\code{PathBuilder$new()}}
 \item \href{#method-PathBuilder-set_root}{\code{PathBuilder$set_root()}}
 \item \href{#method-PathBuilder-get_root}{\code{PathBuilder$get_root()}}
+\item \href{#method-PathBuilder-root_path}{\code{PathBuilder$root_path()}}
 \item \href{#method-PathBuilder-update}{\code{PathBuilder$update()}}
 \item \href{#method-PathBuilder-set_suffix}{\code{PathBuilder$set_suffix()}}
 \item \href{#method-PathBuilder-get_suffix}{\code{PathBuilder$get_suffix()}}
@@ -86,6 +87,16 @@ Set the root path of the builder
 Get the root pah
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{PathBuilder$get_root()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-PathBuilder-root_path"></a>}}
+\if{latex}{\out{\hypertarget{method-PathBuilder-root_path}{}}}
+\subsection{Method \code{root_path()}}{
+Resolve the actual root path (the root property could be a function)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{PathBuilder$root_path()}\if{html}{\out{</div>}}
 }
 
 }
