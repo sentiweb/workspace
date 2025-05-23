@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">workspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,17 +55,17 @@
 <li><a href="https://rprojroot.r-lib.org/" class="external-link">rprojroot</a></li>
 <li><a href="https://here.r-lib.org/" class="external-link">here</a></li>
 </ul>
-<p>But has a different approach</p>
+<p>But has a slightly different approach</p>
 <ul>
 <li>The workspace root is identified with an .Rworkspace file (to promote a standard layout)</li>
-<li>The .Rworkspace file can contain one or more files to loaded at when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)</li>
+<li>The .Rworkspace file can contain one or more files to loaded when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)</li>
 </ul>
 <p>It also provides paths management functions, to allow reference to locations outside the workspace avoiding to manipulate full path.</p>
 <div class="section level2">
 <h2 id="the-workspace">The workspace<a class="anchor" aria-label="anchor" href="#the-workspace"></a>
 </h2>
 <p>The workspace is a directory, in which R scripts are organized as you want in subdirectories (obviously if they are not, no need for it).</p>
-<p>Use the workspace allow each script to determine where is the root of the workspace (and get files from files) and to run one or more common setup scripts.</p>
+<p>Use the workspace allows any script inside it to determine the path of the root of the workspace (and get files from files) and to run one or more common setup scripts automatically.</p>
 <p>To create a workpace, just create a file named “.Rworkspace” at the root of the project, containing several subdirectories. It’s also possible to use the <code><a href="reference/init_workspace.html">init_workspace()</a></code> function to do this.</p>
 <p>To use the setup feature, put the name of the script to be loaded on workspace launch as a line of “.Rworkspace” file (one script by line). Path of these scripts must be <strong>relative to workspace root directory</strong>.</p>
 <p>For example, if a “setup.R” file is at the root of the workspace directory, just put in “.Rworkspace”</p>
@@ -83,8 +83,14 @@
 <p>The principle is to allow scripts to refer to this external location but since the real location is only known when running, only relative paths have to be used in the scripts.</p>
 <p>To use it, you have to define where this output location will be on the computer running the script, but to make it runnable in another computer (meaning often another location) it’s strongly recommended that you define it in a place not managed by a version control system (like git or subversion). For example, it can be defined in a user-specific <code>.Rprofile</code> or in a script loaded during workspace setup (but ignored by version control so each installation must provide it’s specific content).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>workspace.outpath<span class="op">=</span><span class="st">"/my/output/path"</span><span class="op">)</span></span></code></pre></div>
-<p>Once <code>workspace</code> package is loaded, you can use <code><a href="reference/my_path.html">my_path()</a></code> to get the path inside the output path</p>
+<code class="sourceCode R"><span><span class="co"># Before the workspace package is loaded (in .Rprofile for example)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>workspace.outpath<span class="op">=</span><span class="st">"/my/output/path"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># After the package is loaded, the global out path has already been initialized</span></span>
+<span><span class="co"># You have to use `set_root_out_path()`</span></span>
+<span><span class="co"># For example in a script loaded by the workspace setup</span></span>
+<span><span class="fu"><a href="reference/set_root_out_path.html">set_root_out_path</a></span><span class="op">(</span><span class="st">"/my/output/path"</span><span class="op">)</span></span></code></pre></div>
+<p>Once the <code>workspace</code> package is loaded, you can use <code><a href="reference/my_path.html">my_path()</a></code> to get the path inside the output path</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/my_path.html">my_path</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># The current output path, -&gt; /my/output/path</span></span>
 <span><span class="fu"><a href="reference/my_path.html">my_path</a></span><span class="op">(</span><span class="st">"myfile"</span><span class="op">)</span> <span class="co"># -&gt; /my/output/path/myfile</span></span></code></pre></div>

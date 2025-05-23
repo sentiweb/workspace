@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">workspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,27 +49,27 @@ This is achieved using several simple rules:</p><ul><li><p>Using only relative p
 (and the same group of project can exists several times with different configuration in the same user-space)
 This can be achieved by using workspace.</p>
 <p>A workspace is just a directory layout to group some projects (in subdirectories). The set of functions are not called automatically.
-To be identified as the workspace root directory it MUST contains a file `.Rworkspace`
-The file `.Rworkspace` is not working like `.Rprofile` and do not contains R code but can contain the list of files to load
-when load_workspace() is called (file path are relative to the root, i.e. where `.Rworkspace` lives).</p>
-<p>To share a configuration, you can define one or several bootstrap files to be loaded by load_workspace() in the .Rworkspace file.</p>
+To be identified as the workspace root directory it MUST contains a file `.Rworkspace`.</p>
+<p>The file `.Rworkspace` is not working like `.Rprofile` and do not contains R code but can contain the list of files to load
+when <code><a href="launch.html">launch</a>()</code> is called (file path are relative to the root, i.e. where `.Rworkspace` lives).</p>
+<p>To share a configuration, you can define one or several bootstrap files to be loaded by <code><a href="launch.html">launch</a>()</code> in the `.Rworkspace` file.</p>
 <p>Example (the following is an example of our settings for many projects, to describe how we use this package):</p>
-<p>In our projects we defined a .Rworkspace with the following content (one file by line):
+<p>In our projects we defined a `.Rworkspace` with the following content (one file by line):
 —
 location.R
 workspace.R
 —</p>
-<p>The `location.R` is not versioned and contains the installation specific for the project (machine-specific and real paths)
-The `workspace.R` is versionned and contains the config share by all the projects in the workspace and machine/installation independent</p>
+<p>The `location.R` is ignored by version control and contains the installation specific for the project (machine-specific and real paths)
+The `workspace.R` is under version control and contains the config share by all the projects in the workspace and machine/installation independent</p>
 <p>In our settings all path in our projects are relative to the workspace, external path (outside the workspace dir) are
 provided by variables in location.R. With this settings, the scripts in workspace can run everywhere without changing the code.</p>
 <p>This is a convention (the workspace package does not provide list of bootstrap files you can define yours as you want, or none)</p>
 <p>In each project (in workspace' subdirectory)
-We can call `workspace::load_workspace()`</p>
+We can call `workspace::launch()`</p>
 <p>To simplify, each project contains a `conf.R` which contains the subdirectory's scripts common configuration/functions.</p>
 <p>A typical `conf.R` is just:
 —
- `workspace::load_workspace()`
+ `workspace::launch()`
 —</p>
 <p>Then the other script in the subdirectory just has `source('conf.R')` as first line to load the commons.
 We use relative path only, so each script is run with its own directory as working directory.</p>
