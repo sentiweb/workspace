@@ -23,6 +23,7 @@ single_string <- function(x) {
 
 
 #' Path Builder allow to build path from components
+#' @details
 #' A root path, optional prefixes and a suffix (path inside the root)
 #' It manages the path creation for the global out path
 #' Path can be created from several components with the general form

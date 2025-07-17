@@ -2,23 +2,13 @@
 % Please edit documentation in R/path.R
 \name{PathBuilder}
 \alias{PathBuilder}
-\title{Path Builder allow to build path from components
-A root path, optional prefixes and a suffix (path inside the root)
-It manages the path creation for the global out path
-Path can be created from several components with the general form
-root / [prefixes] / suffix
-prefixes are optional
-The Builder can also use an absolute mode, using directly a full path, in this mode the components are not used}
+\title{Path Builder allow to build path from components}
 \description{
 Path Builder allow to build path from components
-A root path, optional prefixes and a suffix (path inside the root)
-It manages the path creation for the global out path
-Path can be created from several components with the general form
-root / [prefixes] / suffix
-prefixes are optional
-The Builder can also use an absolute mode, using directly a full path, in this mode the components are not used
 
 Path Builder allow to build path from components
+}
+\details{
 A root path, optional prefixes and a suffix (path inside the root)
 It manages the path creation for the global out path
 Path can be created from several components with the general form
