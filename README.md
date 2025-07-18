@@ -56,7 +56,9 @@ The principle is to allow scripts to refer to this external location but since t
 
 To use it, you have to define where this output location will be on the computer running the script, but to make it runnable in another computer (meaning often another location) it's
 strongly recommended that you define it in a place not managed by a version control system (like git or subversion).
-For example, it can be defined in a user-specific `.Rprofile` or in a script loaded during workspace setup (but ignored by version control so each installation must provide it's specific content).
+
+For example, it can be defined in a user-specific `.Rprofile` or in a script loaded during workspace setup but ignored by version control so each 
+installation must provide it's specific content.
 
 ```R
 # Before the workspace package is loaded (in .Rprofile for example)
@@ -87,6 +89,8 @@ init_path("subprojet2") # Common output path is now /my/output/path/subproject2
 my_path("myfile") # /my/output/path/subproject2/myfile
 
 ```
+
+The later script only have to know the file to put in the current output path, without knowing the full path (so it can be changed globally without modifying the code).
 
 
 
