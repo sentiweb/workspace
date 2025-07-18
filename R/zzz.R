@@ -1,15 +1,3 @@
-
-.onLoad <- function(libname, pkgname) {
-  # Get environment to store configurations
-  # If not defined create a new empty environment
-  if(pkgname == "workspace") {
-    out.path = base::getOption(OPTION_OUTPATH, default = getwd())
-    if(!is.null(out.path)) {
-      set_root_out_path(out.path)
-    }
-  }
-}
-
 # Default behaviour when attaching workspace (using library(workspace))
 .onAttach <- function(libname, pkgname) {
   if(pkgname == "workspace") {
