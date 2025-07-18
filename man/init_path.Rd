@@ -15,11 +15,12 @@ init_path(p, full.path = FALSE, create = TRUE)
 }
 \description{
 \code{init_path()} and \code{\link{my_path}()} are dedicated to manage path to files used by scripts to make them independent from the
-actual physical location of the files, which depends on where (on which machine, account) the script is running.
+actual physical location of the files, which depends on where (on which machine, account) the script is running. This path is called `global out path`
+(where all output should be placed).
 }
 \details{
-By default the path is added as a suffix to the global output path (see \code{\link{set_root_out_path}} ),
-unless the parameter full.path is TRUE
+By default the path is added as a suffix after the root path and the other components (if any),
+unless the parameter full.path is TRUE. If TRUE the passed path is used as the full output path (the output path is switched in absolute path mode).
 }
 \seealso{
 Other path-functions: 

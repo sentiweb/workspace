@@ -7,5 +7,6 @@
 is_workspace_booted()
 }
 \description{
-Get the booted state of the workspace
+This function returns TRUE when workspace::launch() is called, but before the bootstrap files are loaded.
+Do not use this function inside bootstrap files, because it will be always TRUE
 }

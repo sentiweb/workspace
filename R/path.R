@@ -21,20 +21,20 @@ single_string <- function(x) {
   x
 }
 
-
 #' Path Builder allow to build path from components
 #' @details
-#' A root path, optional prefixes and a suffix (path inside the root)
+#' Components are : a root path, some optional prefixes and a suffix (path inside the root)
 #' It manages the path creation for the global out path
 #' Path can be created from several components with the general form
 #' root / [prefixes] / suffix
 #' prefixes are optional
 #' The Builder can also use an absolute mode, using directly a full path, in this mode the components are not used
+#'
 #' @export
 PathBuilder = R6::R6Class("PathBuilder",
   private=list(
 
-    # #' @field root Root of the path
+    # #' @field root Root of the path. Can be a single string or a function returning a single string
     root=NULL,
 
     # #' @field prefixes List of path prefixes
@@ -43,7 +43,7 @@ PathBuilder = R6::R6Class("PathBuilder",
     # #' @field suffix Current suffix to add to the root
     suffix=NULL,
 
-    # #' @field path Actual real path
+    # #' @field path Actual real path, used as cache.
     current_path=NULL,
 
     # #' @field absolute Is current path in absolute mode
@@ -60,15 +60,33 @@ PathBuilder = R6::R6Class("PathBuilder",
     #' Set the root path of the builder
     #' @param root the root path to set
     set_root = function(root) {
-      root = single_string(root)
+      if(!is.function(root)) {
+        root = single_string(root)
+      }
       private$root = root
       self$update()
     },
 
     #' @description
-    #' Get the root pah
+    #' Get the root path value.
+    #' @returns returns the actual value of root path, even if it's a function. To get the root value use `resolve_root()` instead
     get_root = function() {
       private$root
+    },
+
+    #' @description
+    #' Get the root path as string
+    resolve_root = function() {
+      if(is.function(private$root)) {
+        path = private$root()
+        if(!rlang::is_character(path, 1L)) {
+          rlang::warn("value returned by function set as `root` path is not a single character value")
+          path = path[1]
+        }
+      } else {
+        path = private$root
+      }
+      as.character(path)
     },
 
     #' @description
@@ -79,7 +97,7 @@ PathBuilder = R6::R6Class("PathBuilder",
         return(invisible(private$path))
       }
       # Create prefixes
-      path = private$root
+      path = self$resolve_root()
       path = ending_slash(path)
       pp = c()
       if(length(private$prefixes) > 0) {
@@ -195,9 +213,13 @@ PathBuilder = R6::R6Class("PathBuilder",
   )
 )
 
+option_out_path = function() {
+  getOption(OPTION_OUTPATH, getwd())
+}
+
 #' Global out path
 #' @noRd
-.out_path = PathBuilder$new("")
+.out_path = PathBuilder$new(option_out_path)
 
 # Register the common out path in the paths list
 .State$paths$out_path = .out_path
@@ -218,7 +240,10 @@ global_out_path <- function() {
 #' @family path-functions
 #' @export
 set_root_out_path <- function(root) {
-  .out_path$set_root(root)
+  args = list()
+  args[[OPTION_OUTPATH]] = root
+  do.call(options, args)
+  .out_path$update()
 }
 
 #' Get the global base output path
@@ -232,10 +257,11 @@ get_root_out_path <- function() {
 #' Define subpath (suffix) of global out path, usable by \code{\link{my_path}()}
 #'
 #' \code{init_path()} and \code{\link{my_path}()} are dedicated to manage path to files used by scripts to make them independent from the
-#' actual physical location of the files, which depends on where (on which machine, account) the script is running.
+#' actual physical location of the files, which depends on where (on which machine, account) the script is running. This path is called `global out path`
+#' (where all output should be placed).
 #'
-#' By default the path is added as a suffix to the global output path (see \code{\link{set_root_out_path}} ),
-#' unless the parameter full.path is TRUE
+#' By default the path is added as a suffix after the root path and the other components (if any),
+#' unless the parameter full.path is TRUE. If TRUE the passed path is used as the full output path (the output path is switched in absolute path mode).
 #' @param p character path
 #' @param full.path logical if TRUE p is considered as an absolute path, replace all the current path
 #' @param create logical, if TRUE create the subpath if not exists
@@ -294,9 +320,9 @@ add_out_path_prefix = function(name, prefix) {
 #'
 #' This function build a path but do not change the current path components of the session
 #'
-#' @param base chr base output path, use .builder will be used if NULL
+#' @param base character, base output path, use .builder will be used if NULL
 #' @param prefixes list() replace some prefixes, only works if prefixes is already defined by \code{\link{add_out_path_prefix}()}
-#' @param suffix chr suffix to use, if NULL use default
+#' @param suffix character suffix to use, if NULL use default
 #' @param .builder builder to use for default components values, if NULL use global out path builder
 #' @family path-functions
 #' @export
@@ -334,16 +360,22 @@ create_path = function(base=NULL, prefixes=list(), suffix=NULL, .builder=NULL) {
 #' @exportS3Method
 print.path_components = function(x, ...) {
   cat("Registred paths\n")
-  cat(" - root = ", x$root ,"\n")
+  cat(" - root = ")
+  if(is.function(x$root)) {
+    cat(" (function) ",sQuote(x$root()))
+  } else {
+    cat(sQuote(x$root))
+  }
+  cat("\n")
   r = 'root'
   if( length(x$prefixes) > 0) {
     Map(function(name, p) {
-      cat(" -", name, "=", p,"\n")
+      cat(" -", name, "=", sQuote(p),"\n")
     }, names(x$prefixes), x$prefixes)
     r = c(r, names(x$prefixes))
   }
   if(!is.null(x$suffix)) {
-    cat(" - suffix = ", x$suffix, " (last value passed to init_path())\n")
+    cat(" - suffix = ", sQuote(x$suffix), " (last value passed to init_path())\n")
     r = c(r, 'suffix')
   }
   if(x$absolute) {
@@ -351,7 +383,7 @@ print.path_components = function(x, ...) {
   } else {
     cat("Resolved by : ", paste(paste0("[",r,"]"), collapse=' / '), "\n"  )
   }
-  cat("Current : ", x$path,"\n")
+  cat("Current : ", sQuote(x$path),"\n")
   cat("\n")
 }
 
@@ -362,8 +394,8 @@ print.path_components = function(x, ...) {
 #' @examples
 #' \dontrun{
 #'   set_root_out_path("/my/path")
-#'   init_path("")
-#'   my_path("toto") # get "toto" inside the out path -> /my/path/toto
+#'   init_path("foo") # Suffix is foo, current output path is /my/path/foo
+#'   my_path("bar") # get "bar" inside the current out path -> /my/path/foo/bar
 #' }
 #' @family path-functions
 #' @param ... characters string to used (will be concatenated with no space)

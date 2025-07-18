@@ -3,13 +3,16 @@
 \name{PathBuilder}
 \alias{PathBuilder}
 \title{Path Builder allow to build path from components}
+\value{
+returns the actual value of root path, even if it's a function. To get the root value use `resolve_root()` instead
+}
 \description{
 Path Builder allow to build path from components
 
 Path Builder allow to build path from components
 }
 \details{
-A root path, optional prefixes and a suffix (path inside the root)
+Components are : a root path, some optional prefixes and a suffix (path inside the root)
 It manages the path creation for the global out path
 Path can be created from several components with the general form
 root / [prefixes] / suffix
@@ -22,6 +25,7 @@ The Builder can also use an absolute mode, using directly a full path, in this m
 \item \href{#method-PathBuilder-new}{\code{PathBuilder$new()}}
 \item \href{#method-PathBuilder-set_root}{\code{PathBuilder$set_root()}}
 \item \href{#method-PathBuilder-get_root}{\code{PathBuilder$get_root()}}
+\item \href{#method-PathBuilder-resolve_root}{\code{PathBuilder$resolve_root()}}
 \item \href{#method-PathBuilder-update}{\code{PathBuilder$update()}}
 \item \href{#method-PathBuilder-set_suffix}{\code{PathBuilder$set_suffix()}}
 \item \href{#method-PathBuilder-get_suffix}{\code{PathBuilder$get_suffix()}}
@@ -73,9 +77,19 @@ Set the root path of the builder
 \if{html}{\out{<a id="method-PathBuilder-get_root"></a>}}
 \if{latex}{\out{\hypertarget{method-PathBuilder-get_root}{}}}
 \subsection{Method \code{get_root()}}{
-Get the root pah
+Get the root path value.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{PathBuilder$get_root()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-PathBuilder-resolve_root"></a>}}
+\if{latex}{\out{\hypertarget{method-PathBuilder-resolve_root}{}}}
+\subsection{Method \code{resolve_root()}}{
+Get the root path as string
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{PathBuilder$resolve_root()}\if{html}{\out{</div>}}
 }
 
 }

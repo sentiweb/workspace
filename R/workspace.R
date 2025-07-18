@@ -100,6 +100,9 @@ launch <- function(envir=rlang::caller_env()) {
 }
 
 #' Get the booted state of the workspace
+#' @description
+#' This function returns TRUE when workspace::launch() is called, but before the bootstrap files are loaded.
+#' Do not use this function inside bootstrap files, because it will be always TRUE
 #' @export
 is_workspace_booted = function() {
   get_state("ws.booted", default=FALSE)

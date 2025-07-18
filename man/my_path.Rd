@@ -15,8 +15,8 @@ my_path is the common function to create path inside the global out path.
 \examples{
 \dontrun{
   set_root_out_path("/my/path")
-  init_path("")
-  my_path("toto") # get "toto" inside the out path -> /my/path/toto
+  init_path("foo") # Suffix is foo, current output path is /my/path/foo
+  my_path("bar") # get "bar" inside the current out path -> /my/path/foo/bar
 }
 }
 \seealso{

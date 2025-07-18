@@ -7,11 +7,11 @@
 create_path(base = NULL, prefixes = list(), suffix = NULL, .builder = NULL)
 }
 \arguments{
-\item{base}{chr base output path, use .builder will be used if NULL}
+\item{base}{character, base output path, use .builder will be used if NULL}
 
 \item{prefixes}{list() replace some prefixes, only works if prefixes is already defined by \code{\link{add_out_path_prefix}()}}
 
-\item{suffix}{chr suffix to use, if NULL use default}
+\item{suffix}{character suffix to use, if NULL use default}
 
 \item{.builder}{builder to use for default components values, if NULL use global out path builder}
 }
