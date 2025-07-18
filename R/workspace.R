@@ -13,7 +13,7 @@ workspace_state = function(...) {
 
 #' Find workspace root
 #'
-#' The root of the workspace is done by finding location of the .Rworkspace file
+#' The root of the workspace is done by finding location of the `.Rworkspace` file
 #' This function can be called in subdirectories of a project to find the workspace root and be able to load
 #' The workspace configuration.
 #' @param max.depth maximum number of upper directory to scan. Default is reasonable but it can be changed using option workspace.maxdepth
@@ -55,12 +55,12 @@ find_workspace = function(max.depth=NULL) {
     workspace_state("workspace"=dir)
     return(dir)
   }
-  rlang::abort(paste0("Unable to find workspace after scanning directory up from ", sQuote(getwd())," to ", sQuote(dir), "no file named ", sQuote(mark.file)," found"))
+  rlang::abort(paste("Unable to find workspace after scanning directory up from", sQuote(getwd()), "to", sQuote(dir), "no file named", sQuote(mark.file), "found"))
 }
 
 #' Launch the workspace
 #'
-#' Find the workspace location and load files listed in .Rworkspace in the passed environment
+#' Find the workspace location and load files listed in `.Rworkspace` in the passed environment
 #' @param envir Environment to load the bootstrap files into, by default the caller env
 #' @export
 launch <- function(envir=rlang::caller_env()) {
@@ -68,7 +68,7 @@ launch <- function(envir=rlang::caller_env()) {
   verbose = base::getOption(OPTION_VERBOSE, default=FALSE)
   if(booted) {
     if(verbose) {
-      rlang::inform(paste("Workspace already booted"), class="workspace_msg")
+      rlang::inform("Workspace already booted", class="workspace_msg")
     }
     return(invisible(NULL))
   }
@@ -77,7 +77,7 @@ launch <- function(envir=rlang::caller_env()) {
   workspace = find_workspace()
   ws_file = file.path(workspace, WORKSPACE_FILE)
   if(verbose) {
-    rlang::inform(paste("Workspace found in ", sQuote(workspace)), class="workspace_msg")
+    rlang::inform(paste("Workspace found in", sQuote(workspace)), class="workspace_msg")
   }
   bootstraps = readLines(ws_file, warn=FALSE)
   for(file in bootstraps) {
@@ -90,13 +90,14 @@ launch <- function(envir=rlang::caller_env()) {
     }
     p = file.path(workspace, f)
     if(!file.exists(p)) {
-      rlang::abort(paste0("File listed in ", ws_file, " does not exists", sQuote(file), " from ", workspace))
+      rlang::abort(paste("File listed in", ws_file, "does not exists", sQuote(file), "from", workspace))
     }
     if(verbose) {
-      rlang::inform(paste("loading workspace file ", sQuote(p)), class="workspace_msg")
+      rlang::inform(paste("loading workspace file", sQuote(p)), class="workspace_msg")
     }
     source(p, local=envir)
   }
+  workspace_state(ws.loaded=TRUE)
 }
 
 #' Get the booted state of the workspace
@@ -108,9 +109,17 @@ is_workspace_booted = function() {
   get_state("ws.booted", default=FALSE)
 }
 
+#' Get the loaded state of the workspace
+#' @description
+#' This function returns TRUE when workspace::launch() is called, after the workspace setup files are loaded.
+#' @export
+is_workspace_loaded = function() {
+  get_state("ws.loaded", default=FALSE)
+}
+
 #' Initialize a workspace
 #'
-#' Create the root file .Rworkspace with list of file to load on startup
+#' Create the root file `.Rworkspace` with list of file to load on startup
 #'
 #' @param path character vector, path where to init the workspace (if NULL (default), will use current directory)
 #' @param bootstraps character vector list of file to be loaded when workspace is loaded, by default add a workpace.R file. (path must be relative to `path` argument)
