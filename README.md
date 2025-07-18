@@ -14,7 +14,7 @@ It shares some common features with other packages like
 
 But has a slightly different approach
 
-- The workspace root is identified with an .Rworkspace file (to promote a standard layout)
+- The workspace root is identified with an file named `.Rworkspace` (to promote a standard layout)
 - The .Rworkspace file can contain one or more files to loaded when the workspace is launched, allowing the project to be configured at the workspace level (complementary to site/user)
 
 It also provides paths management functions, to allow reference to locations outside the workspace avoiding to manipulate full path.
@@ -25,12 +25,12 @@ The workspace is a directory, in which R scripts are organized as you want in su
 
 Use the workspace allows any script inside it to determine the path of the root of the workspace (and get files from files) and to run one or more common setup scripts automatically. 
 
-To create a workpace, just create a file named ".Rworkspace" at the root of the project, containing several subdirectories.
+To create a workpace, just create a file named `.Rworkspace` at the root of the project, containing several subdirectories.
 It's also possible to use the `init_workspace()` function to do this.
 
-To use the setup feature, put the name of the script to be loaded on workspace launch as a line of ".Rworkspace" file (one script by line). Path of these scripts must be **relative to workspace root directory**.
+To use the setup feature, put the name of the script to be loaded on workspace launch as a line of `.Rworkspace` file (one script by line). Path of these scripts must be **relative to workspace root directory**.
 
-For example, if a "setup.R" file is at the root of the workspace directory, just put in ".Rworkspace"
+For example, if a "setup.R" file is at the root of the workspace directory, just put in `.Rworkspace`
 
 ```
 setup.R
@@ -43,6 +43,8 @@ workspace::launch()
 ```
 
 The way the package run, the script doesnt need to know about how to find the root or what to load to configure the project because it's not its responsability. It only has to tell the workspace to do the job.
+
+Once launched, it's possible to get the workspace root path by calling the function `find_workspace()`.
 
 ## Path functions
 
