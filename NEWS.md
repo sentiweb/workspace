@@ -1,7 +1,12 @@
+# workspace 1.1.0
+
+* add function `is_workspace_loaded()`
+* Default root path is using `workspace.outpath` option value with a functor so it can be updated later, removing the need for package Onload hook.
 
 # workspace 1.0.1
 
 * Default out path is working directory
+* Root path can be set using a function
 
 # workspace 1.0.0
 
