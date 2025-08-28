@@ -54,17 +54,19 @@ PathBuilder = R6::R6Class("PathBuilder",
     #' Create the path builder instance for the given root path
     #' @param root character root path
     initialize=function(root) {
-      self$set_root(root)
+      self$set_root(root, FALSE) # Do not update current path on init, will be done on first use
     },
     #' @description
     #' Set the root path of the builder
     #' @param root the root path to set
-    set_root = function(root) {
+    set_root = function(root, update=TRUE) {
       if(!is.function(root)) {
         root = single_string(root)
       }
       private$root = root
-      self$update()
+      if(update) {
+        self$update()
+      }
     },
 
     #' @description
@@ -154,6 +156,9 @@ PathBuilder = R6::R6Class("PathBuilder",
     #' Get a path inside the current path
     #' @param ... character arguments to concat as sub path
     path = function(...) {
+      if(is.null(private$current_path)) {
+        self$update()
+      }
       p = private$current_path
       sep = ifelse(endsWith(p, "/"), "", "/")
       paste0(p, sep, ...)

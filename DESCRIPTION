@@ -2,7 +2,7 @@ Package: workspace
 Type: Package
 Authors@R: person("Clément", "Turbelin", email = "clement.turbelin@sorbonne-universite.f", role = c("aut", "cre"))
 Title: Workspace helps to organize a set of projects sharing common config
-Version: 1.1.0
+Version: 1.1.1
 Description: A workpace is a way to organize a set of R scripts in multiple subdirectories but allowing to share and load a common setup. Workspace package provides 
     functions to find the root of the workspace, and load a workspace-wide configuration (shared accros the projects in the workspace directory) and
     provides functions to manage paths outside the project avoiding the need to use absolute path.

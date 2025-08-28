@@ -1,3 +1,7 @@
+# workspace 1.1.1
+
+* Defer current_path update on class initialization to avoid default path set to package building path for global out path.
+
 # workspace 1.1.0
 
 * add function `is_workspace_loaded()`
